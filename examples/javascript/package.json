@@ -1,0 +1,26 @@
+{
+  "name": "javascript-monad-experiment",
+  "version": "0.0.1",
+  "license": "MIT",
+  "keywords": [
+    "fantasy land",
+    "macros",
+    "javascript",
+    "monads"
+  ],
+  "devDependencies": {
+    "grunt-cli": "0.1.9",
+    "grunt": "0.4.x",
+    "grunt-rigger": "0.5.x",
+    "grunt-contrib-concat": "0.3.0",
+    "grunt-contrib-jshint": "0.6.x",
+    "grunt-contrib-nodeunit": "0.2.0",
+    "shelljs": "0.2.x",
+    "sweet.js": "0.2.x",
+    "fantasy-check": "0.x.x",
+    "fantasy-identities": "0.x.x",
+    "fantasy-options": "0.x.x",
+    "fantasy-combinators": "0.x.x"
+  }
+}
+
