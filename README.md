@@ -6,7 +6,7 @@ from a practical perspective, starting from Javascript examples
 and diving into the beautiful world of Haskell. Time permitting,
 everyone gets to craft their own Monad in Haskell.
 
-The presentation is [here](presentation/index.html).
+My presentation is [here](http://raimohanska.github.io/Monads).
 
 There are ready [examples](examples/README.md) in Haskell and Javascript.
 
