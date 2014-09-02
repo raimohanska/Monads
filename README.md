@@ -6,9 +6,9 @@ from a practical perspective, starting from Javascript examples
 and diving into the beautiful world of Haskell. Time permitting,
 everyone gets to craft their own Monad in Haskell.
 
-The presentation is `presentation/index.html`.
+The presentation is [here](presentation/index.html).
 
-There are ready examples in the `examples` directory.
+There are ready [examples](examples/README.md) in Haskell and Javascript.
 
 The assignments for the workshop can be found in the `assignments` directory.
 
