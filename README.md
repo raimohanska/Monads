@@ -8,9 +8,9 @@ everyone gets to craft their own Monad in Haskell.
 
 My presentation is [here](http://raimohanska.github.io/Monads).
 
-There are ready [examples](examples/README.md) in Haskell and Javascript.
+There are ready [examples](examples) in Haskell and Javascript.
 
-The assignments for the workshop can be found in the `assignments` directory.
+The Haskell assignments for my monad workshop can be found [here](assignments/haskell).
 
 Work hard and have fun!
 
