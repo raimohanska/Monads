@@ -161,6 +161,7 @@ retweetAll = do
 
 <section><h2>How?</h2></section>
 
+<section>
 <section><h2>You Are Here</h2>
 <pre><code data-trim contenteditable>
 module Async where
@@ -169,7 +170,16 @@ type Callback a = (a -> IO())
 
 data Async a = Async { run :: (Callback a -> IO ()) }
 </code></pre>
-<p>...waiting for the magic to happen</p>
+</section>
+<section>
+<h2>You want to be here</h2>
+<pre><code data-trim contenteditable>
+retweetAll = do
+  users <- fetchUsers
+  tweets <- (mapM fetchTweets users)
+  mapM_ retweet (join tweets)
+</code></pre>
+</section>
 </section>
 
 <section><h2>It still isn't a Monad</h2></section>
@@ -185,6 +195,8 @@ data Async a = Async { run :: (Callback a -> IO ()) }
 <pre><code data-trim contenteditable>
 class Show a where
   show :: a -> String
+
+print :: Show a => a -> IO ()
 </code></pre>
 </section>
 <section>
@@ -249,6 +261,13 @@ instance Functor Maybe where
 class Monad m where
   (>>=) :: m a -> (a -> m b) -> m b
   return :: a -> m a
+</code></pre>
+</section>
+<section>
+<h2>Typeclasses</h2>
+<p>A simple List type</p>
+<pre><code data-trim contenteditable>
+data List a = Nil | Cons a (List a)
 </code></pre>
 </section>
 <section>
@@ -322,7 +341,7 @@ retweetAll = do
 <section><h1>Desugaring!</h2></section>
 <section>
 <h2>Desugaring</h2>
-<h3>GHC desugars this</h3>
+<h3>Haskell compiler desugars this</h3>
 <pre><code data-trim contenteditable>
 retweetAll = do
   users <- fetchUsers
