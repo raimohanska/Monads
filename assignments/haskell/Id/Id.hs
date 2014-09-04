@@ -4,5 +4,5 @@ module ID where
 data Id a = Id a
 
 instance Monad Id where
-  return = undefined
-  Id x >>= f = undefined
+  return = Id 
+  Id x >>= f = f x
