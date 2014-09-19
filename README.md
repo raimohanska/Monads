@@ -2,9 +2,11 @@
 
 The Monad is a simple and powerful abstraction, yet often
 considered complex and hard to understand. I'll discuss monads
-from a practical perspective, starting from Javascript examples
-and diving into the beautiful world of Haskell. Time permitting,
-everyone gets to craft their own Monad in Haskell.
+from a practical perspective and give a hands-on intro to the Haskell language
+and typeclasses. Then everyone gets to build some monads in Haskell.
+
+Bring your own Haskell compilers! But don't worry, you can do this online
+too: http://haskellonline.org/ or http://www.compileonline.com/compile_haskell_online.php
 
 My presentation is [here](http://raimohanska.github.io/Monads).
 
