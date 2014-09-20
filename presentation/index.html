@@ -161,294 +161,134 @@ do
 - Lazy evaluation
 </aside>
 </section>
-
-<section> <h2 style="text-transform:none;">What are they?</h2> </section>
-
-<section> <h2 style="text-transform:none;">Chainable</h2> </section>
-
-<section> <h2 style="text-transform:none;">Chainable Operation</h2> </section>
+<section>
+  <section>
+    <h1>Your First Haskell Program</h1>
+    <aside class="notes" data-markdown>
+    - Open GHCI
+    - Evaluate 1, 1 + 2
+    - Write `plus3`
+    - Add `main`
+    - Add #!/usr/bin/env runhaskell
+    - Everyone does the same to ensure envs are ok
+    </aside>
+  </section>
+  <section>
+  examples/haskell/Plus3.hs
+  </section>
+</section>
+<section>
+<h1>Haskell is cool</h1>
+<aside class="notes" data-markdown>
+- But we've limited time
+- Introduce the Maybe type
+</section>
 
 <section>
-<h2>Async Operation</h2>
-<h3>In Haskell</h3>
+<h1>Maybe</h1>
+</section>
+
+<section>
+<img src="img/value.png">
+</section>
+
+<section>
+<img src="img/value_and_context.png">
+</section>
+
+<section>
+<img src="img/context.png">
+  <aside class="notes" data-markdown>
+
+- Like `null` but a lot smarter 
+
+  </aside>
+</section>
+
+<section>
+<h2>Maybe</h2>
 <pre><code data-trim contenteditable>
-module Async where
-
-type Callback a = (a -> IO()) 
-
-data Async a = Async { run :: (Callback a -> IO ()) }
+data Maybe a = Just a | Nothing
 </code></pre>
-<p>Task that calls your callback with result value</p>
+  <aside class="notes" data-markdown>
+- This is data type definition in Haskell
+- `a` is the type parameter
+- `Just a` and `Nothing` are data constructors
+- GHCI 
+  - :i Maybe
+  - Just 2
+  - plus3 2
+  - plus3 (Just 2)
+  - implement plus3Maybe
+  - fmap plus2 (Just 2)
+</aside>
 </section>
 
 <section>
-<h2>Async example</h2>
-<pre class="left"><code data-trim contenteditable>
-example = Async $ \callback -> 
-  callback "Hello world"
-</code></pre>
-<pre class="right"><code data-trim contenteditable>
-function example(callback) {
-  callback("Hello world")
-}
-</code></pre>
+<img src="img/fmap_apply.png">
+  <aside class="notes" data-markdown>
+  - `fmap` makes our `plus3` function support `Maybe`
+  - What is the magic that happened?
+  - Functor happened
+  </aside>
 </section>
 
 <section>
-<h2>Retweet all!</h2>
-<pre><code data-trim contenteditable>
-retweetAll =
-  users = fetchUsers
-  tweets = map fetchTweets users
-  forEach tweets retweet
-</code></pre>
+<h1>Functor</h1>
+  <aside class="notes" data-markdown>
+  - Functor let's you apply a function to a value in a context
+  - In this case we applied `plus3` in the `Maybe` context
+  </aside>
 </section>
 
 <section>
-<h2>Retweet all!</h2>
-<p>The borken way</p>
-<pre><code data-trim contenteditable>
-function retweetAll(callback) {
-  fetchUsers(function(users) {
-    users.forEach(function(user) {
-      fetchTweets(user, function(tweets) {
-        tweets.forEach(function(tweet) {
-          retweet(tweet, callback)
-        })
-      })
-    })
-  })
-}
-</code></pre>
+<h2>Functor typeclass</h2>
+<img src="img/functor_def.png">
+  <aside class="notes" data-markdown>
+  - More technically, it's a `typeclass`
+  - Typeclasses are like interfaces
+  - Here's the typeclass definition
+  - It says "f is a Functor given it has this `fmap` method with this type signature"
+  - Next, let's have a closer look at the type signature
+  </aside>
 </section>
 
 <section>
-<h2>Retweet all!</h2>
-<p>With Bacon.js</p>
-<pre><code data-trim contenteditable>
-fetchUsers                   // Stream [User]
-  .flatMap(Bacon.fromArray)  // Stream User
-  .flatMap(fetchTweets)      // Stream [Tweet]
-  .flatMap(Bacon.fromArray)  // Stream Tweet
-  .onValue(retweet)
-</code></pre>
-</section>
-
-<section>
-<h2>Retweet all!</h2>
-<p>With Monads</p>
-<pre><code data-trim contenteditable>
-retweetAll = do
-  users <- fetchUsers
-  tweets <- mapM fetchTweets users
-  mapM retweet (join tweets)
-</code></pre>
-</section>
-
-<section><h2>How?</h2></section>
-
-<section>
-<section><h2>You Are Here</h2>
-<pre><code data-trim contenteditable>
-module Async where
-
-type Callback a = (a -> IO()) 
-
-data Async a = Async { run :: (Callback a -> IO ()) }
-</code></pre>
+<h2>fmap type signature</h2>
+<img src="img/fmap_def.png">
+  <aside class="notes" data-markdown>
+  - This is the type signature of `fmap`
+  - Type signature defined the input and output types of a function
+  - Here types `a` and `b` can be anything - fmap suits them all
+  </aside>
 </section>
 <section>
-<h2>You want to be here</h2>
-<pre><code data-trim contenteditable>
-retweetAll = do
-  users <- fetchUsers
-  tweets <- (mapM fetchTweets users)
-  mapM_ retweet (join tweets)
-</code></pre>
-</section>
-</section>
-
-<section><h2>It still isn't a Monad</h2></section>
-
-<section><h2>Monad <i>instance</i> for Async</h2></section>
-
-<section><h2>Typeclasses</h2></section>
-
-<section>
-<section>
-<h2>Typeclasses</h2>
-<p>The Show class</p>
-<pre><code data-trim contenteditable>
-class Show a where
-  show :: a -> String
-
-print :: Show a => a -> IO ()
-</code></pre>
-</section>
-<section>
-<h2>Typeclasses</h2>
-<p>A Simple data type</p>
-<pre><code data-trim contenteditable>
-data Book = Book { name :: String }
-</code></pre>
-</section>
-<section>
-<h2>Typeclasses</h2>
-<p>Show Instance</p>
-<pre><code data-trim contenteditable>
-data Book = Book { name :: String }
-
-instance Show Book where
-  show = name
-</code></pre>
-</section>
-</section>
-
-
-<section>
-<section>
-<h2>Typeclasses</h2>
-<p>Type Parameters</p>
-<pre><code data-trim contenteditable>
-data Maybe a = Nothing | Just a
-</code></pre>
-</section>
-<section>
-<h2>Typeclasses</h2>
-<p>Type Parameters, Functor</p>
-<pre><code data-trim contenteditable>
-class Functor f where
-  fmap :: (a -> b) -> f a -> f b
-
-data Maybe a = Nothing | Just a
-</code></pre>
-</section>
-<section>
-<h2>Typeclasses</h2>
-<p>Functor for Maybe</p>
-<pre><code data-trim contenteditable>
-class Functor f where
-  fmap :: (a -> b) -> f a -> f b
-
-data Maybe a = Nothing | Just a
-
+<h2>Maybe as Functor</h2>
+<pre class="fragment"><code data-trim contenteditable>
 instance Functor Maybe where
-  fmap fun Nothing = Nothing
-  fmap fun (Just x) = Just (fun x)
+  fmap _ Nothing = Nothing
+  fmap f (Just x) = Just (f x)
 </code></pre>
-</section>
+<p class="fragment">... but this is of course already included</p>
+  <aside class="notes" data-markdown>
+  - We already used `fmap` on `Maybe`
+  - Possible because `Maybe` has a `Functor`
+  - Suppose it didn't, we could define it ourselves
+  </aside>
 </section>
 
 <section>
-<section>
-<h2>Typeclasses</h2>
-<p>Monad typeclass</p>
-<pre><code data-trim contenteditable>
-class Monad m where
-  (>>=) :: m a -> (a -> m b) -> m b
-  return :: a -> m a
-</code></pre>
-</section>
-<section>
-<h2>Typeclasses</h2>
-<p>A simple List type</p>
-<pre><code data-trim contenteditable>
-data List a = Nil | Cons a (List a)
-</code></pre>
-</section>
-<section>
-<h2>Typeclasses</h2>
-<p>A simple List type</p>
-<pre><code data-trim contenteditable>
-data List a = Nil | Cons a (List a)
+  <h2>Functors are cool</h2>
+  <pre class="fragment"><code data-trim contenteditable>
+getPostTitle id = case getPost id of
+  Just post -> Just (titleOf post)
+  Nothing -> Nothing
 
-map :: (a -> b) -> List a -> List b
-flatMap :: List a -> (a -> List b) -> List b
-</code></pre>
-</section>
-<section>
-<h2>Typeclasses</h2>
-<p>Monad for List</p>
-<pre><code data-trim contenteditable>
-data List a = Nil | Cons a (List a)
-
-instance Monad List where
-   (>>=) = flatMap
-   return x = Cons x Nil
-</code></pre>
-</section>
-</section>
-<section> <h2 style="text-transform:none;">M a -> (a -> M b) -> M b</h2> </section>
-<section>
-<section>
-<h2>Async Monad</h2>
-<h3>Recap</h3>
-<pre><code data-trim contenteditable>
-data Async a = Async { run :: (Callback a -> IO ()) }
-</code></pre>
-</section>
-<section>
-<h2>Async Monad</h2>
-<h3>bind signature</h3>
-<pre><code data-trim contenteditable>
-data Async a = Async { run :: (Callback a -> IO ()) }
-
-bind :: Async a -> (a -> Async b) -> Async b
-</code></pre>
-</section>
-<section>
-<h2>Async Monad</h2>
-<h3>bind signature</h3>
-<pre><code data-trim contenteditable>
-data Async a = Async { run :: (Callback a -> IO ()) }
-
-bind :: Async a -> (a -> Async b) -> Async b
-
-1. Executes first task
-2. Uses result to create new task
-3. Executes the new task
-</code></pre>
-
-</section>
-<section>
-<h2>Async Monad</h2>
-<p>in action</p>
-<pre><code data-trim contenteditable>
-retweetAll = do
-  users <- fetchUsers
-  tweets <- mapM fetchTweets users
-  mapM retweet (join tweets)
-</code></pre>
-</section>
-</section>
-
-<section><h1>Magic?</h2></section>
-<section>
-<section><h1>Desugaring!</h2></section>
-<section>
-<h2>Desugaring</h2>
-<h3>Haskell compiler desugars this</h3>
-<pre><code data-trim contenteditable>
-retweetAll = do
-  users <- fetchUsers
-  tweets <- (mapM fetchTweets users)
-  mapM_ retweet (join tweets)
-</code></pre>
-</section>
-<section>
-<h2>Desugaring</h2>
-<h3>... into this</h3>
-<pre><code data-trim contenteditable>
-retweetAll = fetchUsers >>= 
-  (\users -> mapM fetchTweets users) >>= 
-  (\tweets -> mapM_ retweet (join tweets))
-</code></pre>
-</section>
-</section>
-
-<section>
-<h1>Your turn</h1>
-<p><a href="https://github.com/raimohanska/monads/assignments/haskell">github.com/raimohanska/monads/assignments/haskell</a></p>
+getPostTitle id = fmap titleOf (getPost id)
+  </code></pre>
+  <p class="fragment">Because you can apply a function to a value in a context</p>
+  <aside class="notes" data-markdown>
+  </aside>
 </section>
 
 <section>
