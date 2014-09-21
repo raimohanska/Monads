@@ -3,4 +3,4 @@
 log/*.log
 tmp/**
 node_modules/
-.sass-cache
+.sass-cachescratch.hs
