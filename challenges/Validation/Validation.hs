@@ -20,9 +20,8 @@ instance (Show a, Show e, Monoid e, Eq e) => Show (Validation e a) where
                           | otherwise = "INVALID " ++ show a ++ "(" ++ show e ++")"
 
 instance (Monoid e) => Monad (Validation e) where
-  return = valid
-  (Validation a errors) >>= f = case f a of
-    Validation b moreErrors -> Validation b (errors `mappend` moreErrors)
+  return = undefined
+  (Validation a errors) >>= f = undefined
 
 instance (Monoid e) => Functor (Validation e) where
   fmap = liftM

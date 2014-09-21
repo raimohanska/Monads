@@ -5,8 +5,8 @@ Go and try to implement each of the Monad instances.
 You might try them from easiest to the hardest:
 
 1. [Identity](Identity)
-2. [Try](Try)
-3. [List](List)
+2. [List](List)
+3. [Validation](Validation)
 4. [State](State)
 5. [Async](Async)
 
