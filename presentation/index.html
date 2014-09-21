@@ -87,13 +87,21 @@
 <img style="width: 80%;" src="img/batman-monads.png">
 </section>
 
-<section><h1>Motivation</h1></section>
+<section><h1>Motivation</h1>
+<aside class="notes" data-markdown>
+- Why monads?
+- What's the buzz
+- Where can I use them?
+- Brief look at some cool use cases
+- Don't worry: details later
+</aside>
+</section>
 
 <section>
 <h3>Monad as Execution Context</h3>
 <h2 class="fragment">Haskell IO</h2>
   <aside class="notes" data-markdown>
-
+- FRAGMENT: IO
 - If side-effects, runs in IO monad
 - Input, Output, Mutable state
 - Compiler knows if you don't have side-effects
@@ -106,6 +114,10 @@
 <h2>IO actions</h2>
 <h4 class="notransform fragment">getTweets :: IO [Tweet]</h4>
 <h4 class="notransform fragment">retweet :: [Tweet] -> IO ()</h4>
+<aside class="notes" data-markdown>
+- FRAGMENTS: getTweets, retweet
+- How do you chain IO actions?
+</aside>
 </section>
 
 <section>
@@ -116,31 +128,30 @@
 <section>
 <h2>>>=</h2>
 <h4>The programmable semicolon</h4>
+<aside class="notes" data-markdown>
+- Not just chain IO actions
+- Reprogram it
+- Logging
+- Pauseable/resumable
+- Automatically handle transactions
+- Provide "thread-local" state
+- Apply security context
+- Apply request/response context
+- Chain asynchronous operations based on callbacks
+</aside>
 </section>
 
 <section>
 <h2>>>=</h2>
-<h4>Maybe - composes optional values</h4>
+<h4>composes computations on optional values</h4>
 </section>
 
 <section>
 <h2>>>=</h2>
-<h4>List - transforms lists</h4>
-</section>
-
-<section>
-<h2>>>=</h2>
-<h4>STM - composes transactional operations</h4>
-</section>
-
-<section>
-<h2>>>=</h2>
-<h4>Snap - access to request/response</h4>
-</section>
-
-<section>
-<h2>>>=</h2>
-<h4>Continuation - composes callbacks</h4>
+<h4>transforms lists</h4>
+<aside class="notes" data-markdown>
+- That's not all...
+</aside>
 </section>
 
 <section>
@@ -148,9 +159,13 @@
 <pre><code data-trim contenteditable>
 do
   tweets <- getTweets
-  let reversed = map reverse tweets
-  retweet reversed
+  let coolTweets = filter isCool tweets
+  retweet coolTweets
 </code></pre>
+<aside class="notes" data-markdown>
+- Easy notation for composing
+- Write imperative code as you've used to
+</aside>
 </section>
 
 <section>
@@ -177,6 +192,12 @@ do
   examples/haskell/Plus3.hs
   </section>
 </section>
+
+<section class="exercise" data-time="5">
+  <h3>Exercise I - plus3</h3>
+  <p data-markdown>See [github.com/raimohanska/monads](https://github.com/raimohanska/monads)</p>
+</section>
+
 <section>
 <h1>Haskell is cool</h1>
 <aside class="notes" data-markdown>
@@ -279,6 +300,8 @@ instance Functor Maybe where
 
 <section>
   <h2>Functors are cool</h2>
+  <p class="fragment">getPost :: String -> Maybe Post</p>
+  <p class="fragment">getPostTitle :: String -> Maybe String</p>
   <pre class="fragment"><code data-trim contenteditable>
 getPostTitle id = case getPost id of
   Just post -> Just (titleOf post)
@@ -289,6 +312,259 @@ getPostTitle id = fmap titleOf (getPost id)
   <p class="fragment">Because you can apply a function to a value in a context</p>
   <aside class="notes" data-markdown>
   </aside>
+</section>
+
+<section>
+<h4>Functor example II</h4>
+<h1>List</h1>
+</section>
+
+<section>
+<h2>Mapping over a List</h2>
+<img class="fragment" src="img/fmap_list.png">
+<aside class="notes" data-markdown>
+- Apply a function to a list of values, return new list
+- Apply a function to a context -> Functor
+- Show in GHCI for native lists
+- List as functor (apply function to value in context)
+- fmap=map
+- Type signatures
+  - fmap :: (a->b) -> f a -> f b
+  -  map :: (a->b) -> [a] -> [b]
+- Try in GHCI
+</aside>
+</section>
+
+<section>
+  <h3>Let's make our own List type</h3>
+  <aside class="notes" data-markdown>
+
+  - Show simple list type data List a = Nil | Cons a (List a)
+  - Stress the type parameter, call List a Type Constructor
+  - Try main = print (Cons 1 Nil)
+  - OMG, Show
+  - Show the Show class
+  - Implement Show for List in GHCI
+  - stress: you can define a function for different patterns separately
+  - Deriving
+  </aside>
+</section>
+
+<section class="exercise" data-time="5">
+  <h3>Exercise II - List Functor</h3>
+</section>
+
+<section>
+<h3>What if I want to apply a binary function?</h3>
+<aside class="notes" data-markdown>
+
+- What if I want to apply a function to two "boxed" values?
+- GHCI 
+  - Just 1 + Just 2
+  -  :t (+), explain the => part
+- Functor won't do, as it's for unary functions
+- Enter Applicative. 
+</aside>
+</section>
+
+<section>
+<h1>Applicative</h1>
+<h3 class="notransform">a.k.a. Applicative Functor</h3>
+</section>
+
+<section>
+<img src="img/recap_functor_applicative.png">
+<aside class="notes" data-markdown>
+- Functor applies function to value in a context
+- Applicative has also the function in a context
+- GHCI
+  - Just plus3 <*> Just 2
+- Cool? Well kinda but.. the cooler thing is:
+- GHCI
+  - Just 1 + Just 2 -- won't work
+  - :t (fmap (+) (Just 1)) -- get function in context
+  - (fmap (+) (Just 1)) <*> Just 2 -- apply to value in context
+  - (+) <$> Just 1 <*> Just 2 -- replace with infix version
+  - let add3 x y z = x + y + z
+  - add3 <$> Just 1 <*> Just 2 <*> Just 3
+</aside>
+</section>
+
+<section>
+<h1>Applicative</h1>
+<h4 class="fragment">Lets you apply n-ary functions to context</h4>
+<h4 class="fragment">Functor < Applicative</h4>
+
+<aside class="notes" data-markdown>
+- FRAGMENTS: apply n-ary, functor<applicative
+- How cool is that?
+- But there is something even cooler
+</aside>
+</section>
+
+<section>
+<h1>Monad</h1>
+</section>
+
+<section>
+<img src="img/recap.png">
+<aside class="notes" data-markdown>
+- Functor applies function to value in context
+- Applicative applies function in context to value in context
+- Applicative applies n-ary function to context
+- Monad applies a function that puts a value into a context
+- For example `half`
+- GHCI: 
+  - half impl
+  - half 1, half 2, half 3
+  - half (Just 1)
+  - Just 1 >>= half
+  - Just 8 >>= half >>= half >>= half >>= half
+- The pipeline operator helps you chain functions that wrap values in a context
+</aside>
+</section>
+
+<section>
+<img src="img/bind_def.png">
+</section>
+
+<section>
+<h2>Monad</h2>
+<pre><code data-trim contenteditable>
+class Monad m where
+  (>>=) :: m a -> (a -> m b) -> m b
+  return :: a -> m a
+</code></pre>
+</section>
+
+<section>
+<h2>Your First Monad</h2>
+<aside class="notes" data-markdown>
+- GHCI
+  - Write Try datatype
+  - write `half` in terms of that
+  - half 4
+  - half 3
+  - half 4 >>= half
+- Not a Monad
+</aside>
+</section>
+
+<section class="exercise" data-time="10">
+  <h3>Exercise III - Try Monad</h3>
+  <p>half 4 >>= half</p>
+</section>
+
+<section>
+  <h2>Monads are cool</h2>
+  <p>Functor < Applicative < Monad</p>
+<aside class="notes" data-markdown>
+
+- Lift 1-ary function to monad: liftM, just like fmap
+- Lift 2-ary function to monad: liftM2, just like with Applicative
+- GHCI: implement Functor, Applicative in terms of Monad for Try
+- fmap=liftM
+- pure=return
+- <*>=ap
+
+- Salesman says "that's not all"
+- Whole catagory of Monads uncovered
+- Remember my mentioning of Haskell IO and Monad as Execution Context?
+</aside>
+</section>
+
+<section>
+<h2>Monad as execution context</h2>
+<h1>Haskell IO</h1>
+<aside class="notes" data-markdown>
+- Remember that IO is explicit in Haskell?
+- Compile-time checked
+- GHCI
+  - :t print
+  - :t print "juha"
+  - make main with type signature, run
+  - :t getLine
+  - print getLine
+  - how do we compose IO actions in Haskell?
+  - getLine >>= print
+  - Use Monads to compose IO actions (next slide)
+</aside>
+</section>
+
+<section>
+<h2 class="notransform">getLine >>= print</h2>
+<aside class="notes" data-markdown>
+- left: IO action that produces String
+- right: function that consumes String, returns IO action
+- binds these together into IO String
+- Furthermore: Monad is also Functor, Applicative
+- GHCI
+  - "lol" ++ "wut"
+  - :t (++)
+  - (++) <$> getLine <*> getLine
+  - (+) <$> readLn <*> readLn
+  - main = fmap plus3 readLn
+- Haskell type system makes it hard to mix IO code with pure code
+- OTOH typeclasses give very powerful tools to work with IO code
+- That's not all!
+</aside>
+</section>
+
+<section>
+<h2>Do-notation</h2>
+<pre><code data-trim contenteditable>
+retweetCool = do
+  tweets <- getTweets
+  let coolTweets = filter isCool tweets
+  retweet coolTweets
+</code></pre>
+<aside class="notes" data-markdown>
+- Something special for Monads in the Haskell compiler
+- Applies to any Monad
+- Walk though
+- Remember: not specific to IO
+- Next: this is what the compiler does
+</aside>
+</section>
+
+<section>
+<h2>Desugaring</h2>
+<pre><code data-trim contenteditable>
+retweetCool =
+  getTweets >>=
+  (\tweets -> return $ filter isCool tweets) >>=
+  retweet
+</code></pre>
+<aside class="notes" data-markdown>
+- Compiler mechanically transforms your do-notation into this
+- Don't you just love do-notation?
+</aside>
+</section>
+
+<section>
+<h2>Hello, Juha!</h2>
+<aside class="notes" data-markdown>
+- Let's write a simple Hello Juha in do-notation
+- Truly awesum
+</aside>
+</section>
+
+<section class="exercise" data-time="5">
+  <h3>Exercise IV - Age Calculator</h3>
+  <p>birth year? -> you're N years old</p>
+  <p>Tips: readLn, show
+</section>
+
+<section>
+  <h2>Your turn</h2>
+<aside class="notes" data-markdown>
+- Now you
+  - Know Functor, Applicative, Monad
+  - Have written your first Monad (Try)
+  - Have tried do-notation
+- Next: A bunch of monads to write!
+- Any questions before we start hacking?
+</aside>
 </section>
 
 <section>
