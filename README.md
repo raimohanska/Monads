@@ -6,7 +6,7 @@ from a practical perspective and give a hands-on intro to the Haskell language
 and typeclasses. Then everyone gets to build some monads in Haskell.
 
 Bring your own Haskell compilers! But don't worry, you can do this online
-too: http://haskellonline.org/ or http://www.compileonline.com/compile_haskell_online.php
+too: http://www.compileonline.com/compile_haskell_online.php or http://haskellonline.org/
 
 My presentation can be viewed [here](http://raimohanska.github.io/Monads).
 
