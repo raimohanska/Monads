@@ -4,7 +4,11 @@ import Control.Applicative
 import Control.Monad
 
 data List a = Nil | Cons a (List a)
-  deriving (Show, Eq)
+  deriving (Eq)
+
+instance Show a => Show (List a) where
+  show Nil = ""
+  show (Cons head tail) = show head ++ " " ++ show tail
 
 concatL :: List a -> List a -> List a
 concatL Nil xs = xs
