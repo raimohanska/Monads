@@ -8,11 +8,14 @@ and typeclasses. Then everyone gets to build some monads in Haskell.
 Bring your own Haskell compilers! But don't worry, you can do this online
 too: http://haskellonline.org/ or http://www.compileonline.com/compile_haskell_online.php
 
-My presentation is [here](http://raimohanska.github.io/Monads).
+My presentation can be viewed [here](http://raimohanska.github.io/Monads).
 
-There are ready [examples](examples) in Haskell and Javascript.
+There are 4 little excercises we do during the presentation. Solutions to those can be found
+[here](examples/exercises).
 
-The Haskell assignments for my monad workshop can be found [here](assignments/haskell).
+After the presentation, I'll present you with a bunch of [challenges](challenges). I hope you'll
+be able to complete as many as possible. If you need help, want to review your solution or just
+lazy, you'll find ready-made solutions [here](examples/challenges).
 
 Work hard and have fun!
 
