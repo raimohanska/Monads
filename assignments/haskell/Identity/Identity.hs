@@ -7,12 +7,12 @@ data Identity a = Identity a
   deriving (Eq, Show)
 
 instance Monad Identity where
-  return = Identity
-  Identity x >>= f = f x
+  return = undefined
+  Identity x >>= f = undefined
 
 instance Functor Identity where
-  fmap f (Identity x) = Identity (f x)
+  fmap = undefined
 
 instance Applicative Identity where
-  pure = return
-  (<*>) = ap
+  pure = undefined
+  (<*>) = undefined

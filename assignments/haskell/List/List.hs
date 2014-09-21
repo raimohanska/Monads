@@ -1,8 +1,13 @@
 module List where
 
---- An alternative List datatype in case you find [] too easy
+import Control.Applicative
+import Control.Monad
+
 data List a = Nil | Cons a (List a)
   deriving (Show, Eq)
+
+instance Functor List where
+  fmap = undefined
 
 instance Monad List where
   return x = undefined

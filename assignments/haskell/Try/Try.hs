@@ -5,13 +5,14 @@ data Try a = Fail String | Ok a
   deriving (Eq, Show)
 
 instance Monad Try where
-  Ok x >>= f = f x
-  (Fail e) >>= f = Fail e
-  return = Ok
+  Ok x >>= f = undefined
+  (Fail e) >>= f = undefined
+  return x = undefined
 
 instance Functor Try where
-  fmap = liftM
+  fmap = undefined
 
 instance Applicative Try where
   (<*>) = ap
   pure = return
+
