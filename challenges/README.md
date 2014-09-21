@@ -8,7 +8,7 @@ You might try them from easiest to the hardest:
 2. [List](List)
 3. [Validation](Validation)
 4. [State](State)
-5. [Async](Async)
+5. [Async](Async) (this one's a bit fuzzy at the moment)
 
 If you're a cheater or want to compare your monads against mine, 
 you might want to look under the `examples` directory.
