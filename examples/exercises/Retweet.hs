@@ -12,8 +12,3 @@ retweetCool = do
   tweets <- getTweets
   let coolTweets = filter isCool tweets
   retweet coolTweets
-
-retweetCool2 =
-  getTweets >>=
-  (\tweets -> return $ filter isCool tweets) >>=
-  retweet
