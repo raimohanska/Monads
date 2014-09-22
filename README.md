@@ -8,7 +8,8 @@ and typeclasses. Then everyone gets to build some monads in Haskell.
 Bring your own Haskell compilers! But don't worry, you can do this online
 too: http://www.compileonline.com/compile_haskell_online.php or http://haskellonline.org/
 
-My presentation can be viewed [here](http://raimohanska.github.io/Monads).
+My presentation can be viewed [here](http://raimohanska.github.io/Monads). See [presentation](presentation) 
+directory for more details.
 
 There are 4 little excercises we do during the presentation. Solutions to those can be found
 [here](examples/exercises).
