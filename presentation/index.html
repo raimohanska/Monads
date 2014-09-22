@@ -23,6 +23,11 @@
         margin: 2%;
       }
       .notransform { text-transform: none !important; }
+      .reveal div.timer {
+        font-size: 1.2em;
+        margin-bottom: 0.5em;
+        color: #5F9DA6;
+      }
     </style>
 
 		<!-- For syntax highlighting -->
@@ -47,7 +52,6 @@
 	<body>
 
 		<div class="reveal">
-
 <!-- Any section element inside of this container is displayed as a slide -->
 <div class="slides">
 <section>
@@ -578,6 +582,9 @@ retweetCool =
 
 		<script src="lib/js/head.min.js"></script>
 		<script src="js/reveal.min.js"></script>
+		<script src="lib/js/underscore-min.js"></script>
+		<script src="lib/js/jquery.js"></script>
+		<script src="lib/js/Bacon.js"></script>
 
 		<script>
 
@@ -608,6 +615,27 @@ retweetCool =
 			});
 
 		</script>
+    <script>
+Reveal.addEventListener( 'ready', function( event ) {
+  var slideE = Bacon.fromEventTarget(Reveal, "slidechanged").map(".currentSlide").map($)
+    .startWith($("section.present"))
+  var timedE = slideE.filter(function(el) { 
+    return el.attr("data-time")
+   })
+  
+  timedE.onValue(function(slide) {
+    var minutes = parseInt(slide.attr("data-time"))
+    var minutesCountdown = _.range(0, minutes).reverse()
+    var el = $("<div>").addClass("timer")
+    slide.prepend(el)
+    var minutesE = Bacon.once(minutes).concat(Bacon.sequentially(60000, minutesCountdown))
+        .map(function(m) { return m + " minutes"})
+        .takeUntil(slideE)
+    minutesE.onValue(el, "text")
+    minutesE.onEnd(el, "remove")
+  })
+} );
+    </script>
 
 	</body>
 </html>
