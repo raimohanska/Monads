@@ -29,7 +29,7 @@ Work hard and have fun!
 
 - ghci
   - Load source code `:l <filename>`
-  - Reload source code `:r (reload)`
+  - Reload source code `:r`
   - Type signature of expression `:t map reverse ["bacon", "eggs"]`
   - Info on function `:i map` or on typeclass `:i Monad`
   - Import module `import Control.Applicative`
