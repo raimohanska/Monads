@@ -18,7 +18,27 @@ After the presentation, I'll present you with a bunch of [challenges](challenges
 be able to complete as many as possible. If you need help, want to review your solution or just
 lazy, you'll find ready-made solutions [here](examples/challenges).
 
+Other material you might find useful and fun:
+
+- [Monad laws](http://www.haskell.org/haskellwiki/Monad_laws)
+- [Functors, Applicatives and Monads in Pictures](http://adit.io/posts/2013-04-17-functors,_applicatives,_and_monads_in_pictures.html) by Aditya Bhargava
+
 Work hard and have fun!
+
+## Haskell cheat sheet
+
+- ghci
+  - Load source code `:l <filename>`
+  - Reload source code `:r (reload)`
+  - Type signature of expression `:t map reverse ["bacon", "eggs"]`
+  - Info on function `:i map` or on typeclass `:i Monad`
+  - Import module `import Control.Applicative`
+- [Hoogle](http://www.haskell.org/hoogle/)
+  - search by function name: `map` or `>>=`
+  - search by type signature: `(a -> b) -> m a -> m b`
+- [Learn You a Haskell for Great Good](http://learnyouahaskell.com/chapters)
+  - Free book online
+  - Order a paper copy!
 
 ## Why are Monads useful?
 
