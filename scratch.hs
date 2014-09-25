@@ -1,4 +1,6 @@
+main :: IO ()
 main = do
-  putStrLn "Hello, what's ur naem?"
-  name <- getLine 
-  putStrLn $ "Hello, " ++ name
+  putStrLn "Birth year, plx"
+  year <- fmap read getLine
+  let age = 2014 - year
+  putStrLn $ "you're " ++ (show age) ++ " years old"

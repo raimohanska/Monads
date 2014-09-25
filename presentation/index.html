@@ -58,17 +58,12 @@
 </section>
 <section>
 <h1>Monads</h1>
-<h3>Not Burritos</h3>
 <p>
-<small>Created by <a href="http://github.com/raimohanska">Juha Paananen</a> / <a href="http://twitter.com/raimohanska">@raimohanska</a></small>
+<small>by <a href="http://github.com/raimohanska">Juha Paananen</a> / <a href="http://twitter.com/raimohanska">@raimohanska</a></small>
 </p>
   <aside class="notes" data-markdown>
-- Mystified, simple
-- hope you feel that way to after this
-- first intro to why monads, then intro to haskell (I don't assume you all know it), typeclasses, functors and monads
-- we'll do short time-boxed exercises (in haskell) between my preachings.
-- cool if you have your ghc. there's a web alternative though
-- finally there will be more free coding and time for questions etc
+- Arnold, Eric, Joni/inhuman
+- no fear: you'll learn haskell and no need for pre-installed tools
 - about me: software consultant and coder from Reaktor. long Java background, FP enthusiast since 2008 or so, used haskell in small projects since 2010 or so. very much into FRP, created reactive-bacon for Haskell, then Bacon.js for javascript. not a Haskell guru, morelike a fanboy
   </aside>
 </section>
@@ -91,6 +86,10 @@
 
 <section>
 <img style="width: 80%;" src="img/batman-monads.png">
+  <aside class="notes" data-markdown>
+
+- But before that.. some motivation
+  </aside>
 </section>
 
 <section><h1>Motivation</h1>
@@ -104,22 +103,19 @@
 </section>
 
 <section>
-<h3>Monad as Execution Context</h3>
-<h2 class="fragment">Haskell IO</h2>
+<h2>Haskell IO</h2>
   <aside class="notes" data-markdown>
-- FRAGMENT: IO
 - If side-effects, runs in IO monad
 - Input, Output, Mutable state
 - Compiler knows if you don't have side-effects
 - Caching etc
-- Everything that has side-effects is an IO action
+- IO action -> next slide
   </aside>
 </section>
 <section>
-<h4>Monad as Execution Context</h4>
 <h2>IO actions</h2>
 <h4 class="notransform fragment">getTweets :: IO [Tweet]</h4>
-<h4 class="notransform fragment">retweet :: [Tweet] -> IO ()</h4>
+<h4 class="notransform fragment">retweet :: [Tweet] → IO ()</h4>
 <aside class="notes" data-markdown>
 - FRAGMENTS: getTweets, retweet
 - How do you chain IO actions?
@@ -127,15 +123,23 @@
 </section>
 
 <section>
-<h4>Monad as Execution Context</h4>
 <h2 class="notransform"><small>getTweets</small> >>= <small>retweet</small></h2>
+</section>
+
+<section>
+<h2 class="notransform"><small>tweets = getTweets()</small>
+<span style="background:white;padding:0.4em;">;</span>
+<small>retweet tweets</small>
+</h2>
+<aside class="notes" data-markdown>
+- in some languages you use semicolon to run multiple statements
+</aside>
 </section>
 
 <section>
 <h2>>>=</h2>
 <h4>The programmable semicolon</h4>
 <aside class="notes" data-markdown>
-- Not just chain IO actions
 - Reprogram it
 - Logging
 - Pauseable/resumable
@@ -171,12 +175,24 @@ do
 <aside class="notes" data-markdown>
 - Easy notation for composing
 - Write imperative code as you've used to
+- You probly guessed the pipeline operator is monadic bind
+</aside>
+</section>
+
+<section>
+<h2>>>=</h2>
+<h4>The Monadic Bind Function</h4>
+<aside class="notes" data-markdown>
+- for each monad this has to be defined
+- then you can compose with >>= or do-notation
 </aside>
 </section>
 
 <section>
 <h1>Haskell</h1>
 <aside class="notes" data-markdown>
+- First version 1990, Haskell 98, GHC extensions
+- Inspires new languages like Scala, Elm, Purescript
 - Functional language
 - Simple, powerful type system
 - Lazy evaluation
@@ -190,6 +206,7 @@ do
     - Evaluate 1, 1 + 2
     - Write `plus3`
     - Add `main`
+    - runhaskell, ghc
     - Add #!/usr/bin/env runhaskell
     - Everyone does the same to ensure envs are ok
     </aside>
@@ -217,18 +234,25 @@ do
 
 <section>
 <img src="img/value.png">
+<aside class="notes" data-markdown>
+- this is a value
+- GHCI: apply function to value
+</aside>
 </section>
 
 <section>
 <img src="img/value_and_context.png">
+<aside class="notes" data-markdown>
+- value in a context
+- in a Maybe context
+- Maybe == optional value
+</aside>
 </section>
 
 <section>
 <img src="img/context.png">
   <aside class="notes" data-markdown>
-
 - Like `null` but a lot smarter 
-
   </aside>
 </section>
 
@@ -244,6 +268,7 @@ data Maybe a = Just a | Nothing
 - GHCI 
   - :i Maybe
   - Just 2
+  - write the half-function
   - plus3 2
   - plus3 (Just 2)
   - implement plus3Maybe
@@ -317,6 +342,7 @@ getPostTitle id = fmap titleOf (getPost id)
   </code></pre>
   <p class="fragment">Because you can apply a function to a value in a context</p>
   <aside class="notes" data-markdown>
+  - Fragment: example
   </aside>
 </section>
 
@@ -358,6 +384,9 @@ getPostTitle id = fmap titleOf (getPost id)
 
 <section class="exercise" data-time="5">
   <h3>Exercise II - List Functor</h3>
+<aside class="notes" data-markdown>
+- Show end result
+</aside>
 </section>
 
 <section>
@@ -394,6 +423,15 @@ getPostTitle id = fmap titleOf (getPost id)
   - let add3 x y z = x + y + z
   - add3 <$> Just 1 <*> Just 2 <*> Just 3
 </aside>
+</section>
+
+<section>
+<h2>Applicative</h2>
+<pre><code data-trim contenteditable>
+class Functor f => Applicative f where
+  (<*>) :: f (a -> b) -> f a -> f b
+  pure :: a -> f a
+</code></pre>
 </section>
 
 <section>
@@ -441,6 +479,10 @@ class Monad m where
   (>>=) :: m a -> (a -> m b) -> m b
   return :: a -> m a
 </code></pre>
+<aside class="notes" data-markdown>
+- to make m a monad..
+- write instance for Maybe
+</aside>
 </section>
 
 <section>
@@ -538,7 +580,7 @@ retweetCool = do
 <pre><code data-trim contenteditable>
 retweetCool =
   getTweets >>=
-  (\tweets -> return $ filter isCool tweets) >>=
+  (\tweets -> return (filter isCool tweets)) >>=
   retweet
 </code></pre>
 <aside class="notes" data-markdown>
@@ -562,13 +604,19 @@ retweetCool =
 </section>
 
 <section>
-  <h2>Your turn</h2>
+  <h2>Recap</h2>
+  <p>Functor < Applicative < Monad</p>
 <aside class="notes" data-markdown>
 - Now you
   - Know Functor, Applicative, Monad
   - Have written your first Monad (Try)
   - Have tried do-notation
 - Next: A bunch of monads to write!
+</aside>
+</section>
+<section>
+  <h2>Your turn</h2>
+<aside class="notes" data-markdown>
 - Any questions before we start hacking?
 </aside>
 </section>
