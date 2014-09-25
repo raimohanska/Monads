@@ -4,7 +4,4 @@ log/*.log
 tmp/**
 node_modules/
 .sass-cachescratch.hs
-scratch
-scratch.hi
-scratch.o
-scratch.hs
+scratch*
