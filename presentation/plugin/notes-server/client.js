@@ -3,10 +3,9 @@
 	if ( window.location.search.match( /receiver/gi ) ) { return; }
 
 	var socket = io.connect(window.location.origin);
-	var socketId = Math.random().toString().slice(2);
+	var socketId = "show"
 	
 	console.log('View slide notes at ' + window.location.origin + '/notes/' + socketId);
-	window.open(window.location.origin + '/notes/' + socketId, 'notes-' + socketId);
 
 	// Fires when a fragment is shown
 	Reveal.addEventListener( 'fragmentshown', function( event ) {

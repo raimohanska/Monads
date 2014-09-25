@@ -24,7 +24,7 @@ io.sockets.on('connection', function(socket) {
 });
 
 app.configure(function() {
-	[ 'css', 'js', 'images', 'plugin', 'lib' ].forEach(function(dir) {
+	[ 'css', 'js', 'img', 'plugin', 'lib' ].forEach(function(dir) {
 		app.use('/' + dir, staticDir(opts.baseDir + dir));
 	});
 });
@@ -51,9 +51,12 @@ var brown = '\033[33m',
 	green = '\033[32m',
 	reset = '\033[0m';
 
-var slidesLocation = "http://localhost" + ( opts.port ? ( ':' + opts.port ) : '' );
+var myIp = process.argv[2] || "localhost"
+var maybePort = opts.port ? ( ':' + opts.port ) : ''
+var slidesLocation = "http://localhost" + maybePort
+var notesLocation = "http://" + myIp + maybePort + "/notes/show"
 
 console.log( brown + "reveal.js - Speaker Notes" + reset );
 console.log( "1. Open the slides at " + green + slidesLocation + reset );
-console.log( "2. Click on the link your JS console to go to the notes page" );
+console.log( "2. Open notes at " + green + notesLocation + reset );
 console.log( "3. Advance through your slides and your notes will advance automatically" );

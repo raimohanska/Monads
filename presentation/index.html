@@ -55,6 +55,8 @@
 <!-- Any section element inside of this container is displayed as a slide -->
 <div class="slides">
 <section>
+</section>
+<section>
 <h1>Monads</h1>
 <h3>Not Burritos</h3>
 <p>
@@ -610,7 +612,9 @@ retweetCool =
 					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
 					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
 					{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
-					{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+					{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } },
+          { src: 'socket.io/socket.io.js', async: true },
+          { src: 'plugin/notes-server/client.js', async: true }
 				]
 			});
 
